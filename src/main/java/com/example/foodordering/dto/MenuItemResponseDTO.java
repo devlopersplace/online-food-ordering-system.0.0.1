@@ -16,8 +16,8 @@ public class MenuItemResponseDTO {
         this.category = category;
     }
 
-    public Long getId() { 
-    	return id; 
+    public Long getId() {
+        return id;
     	}
     public String getName() { 
     	return name;

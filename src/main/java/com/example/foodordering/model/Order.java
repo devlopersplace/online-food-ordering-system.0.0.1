@@ -23,7 +23,7 @@ public class Order {
 
     private String customerName;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     private String status; // CREATED, COMPLETED
 

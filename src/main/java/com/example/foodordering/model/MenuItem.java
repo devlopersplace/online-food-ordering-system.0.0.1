@@ -32,7 +32,9 @@ public class MenuItem {
 	private double price;
 	private String category;
 	
-	public MenuItem() {}
+	public MenuItem() {}  //Many frameworks (like Hibernate, JPA, Spring, Jackson) rely on reflection to create objects.
+
+	//They don’t know what arguments to pass, so they require a no-arg constructor to instantiate the class before setting fields.
 	
 	public MenuItem(String name, double price, String category) {
 		this.name = name;
