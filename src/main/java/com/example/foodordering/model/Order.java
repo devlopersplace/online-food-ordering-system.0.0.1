@@ -27,7 +27,7 @@ public class Order {
 
     private String status; // CREATED, COMPLETED
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //Hibernate manages this relationship! When you delete an Order, Hibernate automatically deletes all associated OrderItems (cascade = ALL)
     private List<OrderItem> items;
 
     public Order() {
