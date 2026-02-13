@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails { // Step 1: Implement UserDetails
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +25,22 @@ public class User implements UserDetails { // Step 1: Implement UserDetails
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // --- Spring Security Methods ---
-
+    //down below we only check the type of the collection since in this case we do not have any specific type so we use
+    //placeholder called ? that means we do not know the type of collection so it can be anything and it extends to GrantedAuthority
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Step 2: Convert your Role to a GrantedAuthority.
         // Spring Security expects roles to start with "ROLE_" (e.g., ROLE_USER)
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        //here we are using a ready made class present in the spring security which turns your role into a format Spring
+        //Security understands so it can check if you’re allowed to do something.
+        //in short  SimpleGrantedAuthority makes the role such that spring security can understand
+        //and after that List.of takes that and save it in list because one person can have multiple roles
     }
 
     @Override
-    public String getUsername() {
+    public String getUsername() { //getUsername is a predefined method in UserDetail interface it doesn't care what you call it by name
+        // here we use username and email as same so that user doesn't return
         // Since you use email for login, return email here
         return email;
     }
@@ -95,59 +100,15 @@ public class User implements UserDetails { // Step 1: Implement UserDetails
         this.role = role;
     }
 }
-
-//package com.example.foodordering.entity;
+//Where are these methods used in your code?
 //
-//import jakarta.persistence.*;
+//1. In User.java - getAuthorities():
+//return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+//← Uses .name() to get "USER" or "ADMIN"
 //
-//@Entity
-//@Table(name = "users")
-//public class User  {
-//	
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private Long id;
-//	
-//	@Column(unique = true, nullable = false)
-//	private String email;
-//	
-//	@Column(nullable = false)
-//	private String password;
-//	
-//	@Enumerated(EnumType.STRING) //Enumerated keyword makes your list stored in the db from int to string 
-//	private Role role;
-//	
-//	//additional
-//	public Long getId() {
-//	    return id;
-//	}
+//2. In AuthController - login():
+//jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+//← Uses .name() to put role in JWT token
 //
-//	public void setId(Long id) {
-//	    this.id = id;
-//	}
-//
-//	public String getEmail() {
-//	    return email;
-//	}
-//
-//	public void setEmail(String email) {
-//	    this.email = email;
-//	}
-//
-//	public String getPassword() {
-//	    return password;
-//	}
-//
-//	public void setPassword(String password) {
-//	    this.password = password;
-//	}
-//
-//	public Role getRole() {
-//	    return role;
-//	}
-//
-//	public void setRole(Role role) {
-//	    this.role = role;
-//	}
-//
-//}
+//3. Hibernate uses valueOf() internally:
+//When reading from database, Hibernate calls Role.valueOf("USER") to convert the string back to the enum!

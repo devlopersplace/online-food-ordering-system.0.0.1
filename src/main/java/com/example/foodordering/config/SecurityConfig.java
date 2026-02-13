@@ -46,7 +46,6 @@ public class SecurityConfig {
                 // Everything else requires a valid JWT
                 .anyRequest().authenticated()
             )
-            // Fixes the silent 403 Forbidden error
             .exceptionHandling(exception -> exception
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -81,52 +80,3 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
-
-
-
-//package com.example.foodordering.config;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-//import org.springframework.security.config.http.SessionCreationPolicy;
-//import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//
-//import com.example.foodordering.security.JwtAuthFilter;
-//
-//@Configuration
-//@EnableMethodSecurity
-//public class SecurityConfig {
-//	
-//
-//    @Autowired
-//    private JwtAuthFilter jwtAuthFilter;
-//
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//    	http
-//        // 1. Disable CSRF using the new lambda syntax
-//        .csrf(AbstractHttpConfigurer::disable)
-//        
-//        // 2. Configure request authorization
-//        .authorizeHttpRequests(auth -> auth
-//        	.requestMatchers("/auth/**").permitAll()
-//            .requestMatchers("/admin/**").hasRole("ADMIN")
-//            .anyRequest().authenticated()
-//        )
-//        
-//        .sessionManagement(session ->
-//        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//    );
-//        
-//        // 3. Add your JWT filter
-//        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//    return http.build();
-//    }
-//}
