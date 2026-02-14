@@ -5,6 +5,7 @@ public class AuthResponse {
     private String token;
 
     public AuthResponse(String token) {
+
         this.token = token;
     }
 
@@ -17,4 +18,4 @@ public class AuthResponse {
         this.token = token;
     }
 }
-
+// Auth Response is a wrapper which wraps the token
