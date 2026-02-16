@@ -58,3 +58,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+
+//The real reason why your Register of login url might break check the flow and configuration correctly.
